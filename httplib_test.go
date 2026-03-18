@@ -262,10 +262,6 @@ func TestParseRequest_Malformed(t *testing.T) {
 		raw  string
 	}{
 		{
-			name: "too few lines",
-			raw:  "GET / HTTP/1.1\r\nHost: example.com",
-		},
-		{
 			name: "first line missing parts",
 			raw:  "GET /\r\nHost: example.com\r\n\r\n",
 		},
@@ -330,10 +326,6 @@ func TestParseResponse_Malformed(t *testing.T) {
 		name string
 		raw  string
 	}{
-		{
-			name: "too few lines",
-			raw:  "HTTP/1.1 200 OK\r\nContent-Type: text/plain",
-		},
 		{
 			name: "first line missing parts",
 			raw:  "HTTP/1.1 200\r\nContent-Type: text/plain\r\n\r\n",

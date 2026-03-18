@@ -137,9 +137,6 @@ Body
 func ParseRequest(raw string) (req Request, err error) {
 	errHead := "[malformed request]: "
 	lines := splitLines(raw, "\r\n")
-	if len(lines) < 3 {
-		return Request{}, errors.New(errHead + "should have at least 3 lines")
-	}
 	first := strings.Fields(lines[0])
 	if len(first) < 3 {
 		return Request{}, errors.New(errHead + "first line should contain METHOD PATH HTTP-VERSION")
@@ -192,9 +189,6 @@ body
 func ParseResponse(raw string) (res Response, err error) {
 	errHead := "[malformed request]: "
 	lines := splitLines(raw, "\r\n")
-	if len(lines) < 3 {
-		return Response{}, errors.New(errHead + "should have at least 3 lines")
-	}
 	first := strings.SplitN(lines[0], " ", 3)
 	if len(first) < 3 {
 		return Response{}, errors.New(errHead + "first line should contains HTTP-VERSION RESCODE RESTEXT")
