@@ -44,6 +44,7 @@ Behavior:
 - Always initializes `Headers` with length 2
 - Header 0 is always `Host`
 - If `body` is non-empty, header 1 is `Content-Length`
+- If `body` is empty, header 1 remains the zero-value header (`Key == ""`, `Value == ""`)
 
 ### `NewResponse(status int, body string) (*Response, error)`
 
@@ -74,7 +75,7 @@ Current output format in `WriteTo`:
 - Request first line: `METHOD PATH HTTP/1.1`
 - Header lines: `Key Value` (space-separated)
 - Blank line, body, trailing CRLF
-- Response output includes headers + body (no HTTP status line)
+- Response output includes headers + body (no HTTP status line), which differs from standard HTTP response wire format
 
 ## Parsing
 
