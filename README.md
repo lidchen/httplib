@@ -107,17 +107,26 @@ package main
 
 import (
     "fmt"
+    "log"
 
     "github.com/lidchen/httplib"
 )
 
 func main() {
-    req, _ := httplib.NewRequest("POST", "/api", "example.com", "hello")
+    req, err := httplib.NewRequest("POST", "/api", "example.com", "hello")
+    if err != nil {
+        log.Fatal(err)
+    }
     req.WithHeader("Content-Type", "text/plain")
+
+    // Serialized request uses "Key Value" header lines in current implementation.
     fmt.Println(req.String())
 
     raw := "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nhello\r\n"
-    res, _ := httplib.ParseResponse(raw)
+    res, err := httplib.ParseResponse(raw)
+    if err != nil {
+        log.Fatal(err)
+    }
     fmt.Println(res.StatusCode, res.Body)
 }
 ```
