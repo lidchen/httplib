@@ -2,6 +2,8 @@
 
 `httplib` is a small Go package for building, serializing, and parsing simple HTTP/1.1-like messages.
 
+> Note: current serialization/parsing behavior intentionally reflects the existing implementation, including non-standard formatting differences from real HTTP wire format.
+
 ## Installation
 
 ```bash
@@ -41,10 +43,10 @@ Validation rules:
 
 Behavior:
 
-- Always initializes `Headers` with length 2
-- Header 0 is always `Host`
-- If `body` is non-empty, header 1 is `Content-Length`
-- If `body` is empty, header 1 remains the zero-value header (`Key == ""`, `Value == ""`)
+- Pre-allocates `Headers` with length 2
+- Header index 0 is always `Host`
+- Header index 1 is `Content-Length` only when `body` is non-empty
+- If `body` is empty, header index 1 remains the zero-value header (`Key == ""`, `Value == ""`)
 
 ### `NewResponse(status int, body string) (*Response, error)`
 
@@ -76,6 +78,11 @@ Current output format in `WriteTo`:
 - Header lines: `Key Value` (space-separated)
 - Blank line, body, trailing CRLF
 - Response output includes headers + body (no HTTP status line), which differs from standard HTTP response wire format
+
+Serialization and parsing are not symmetrical in current code:
+
+- `WriteTo` writes headers as `Key Value`
+- `ParseRequest` / `ParseResponse` expect headers as `Key: Value`
 
 ## Parsing
 
